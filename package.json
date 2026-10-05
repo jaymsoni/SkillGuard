@@ -1,0 +1,57 @@
+{
+  "name": "skillguard",
+  "version": "0.1.0",
+  "description": "CLI to scan Agent Skills for security issues, score them, lock, and install",
+  "scripts": {
+    "test": "vitest run",
+    "build": "tsup",
+    "dev": "tsx src/cli/cli.ts",
+    "test:watch": "vitest",
+    "lint": "eslint .",
+    "prepare": "npm run build",
+    "scan:ci": "node dist/cli.cjs scan tests/fixtures/skills --format json",
+    "pretest": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jaymsoni/SkillGuard.git"
+  },
+  "homepage": "https://github.com/jaymsoni/SkillGuard#readme",
+  "bugs": {
+    "url": "https://github.com/jaymsoni/SkillGuard/issues"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "Apache-2.0",
+  "type": "module",
+  "engines": {
+    "node": ">=22.12"
+  },
+  "bin": {
+    "skillguard": "dist/cli.cjs"
+  },
+  "dependencies": {
+    "chalk": "^6.0.1",
+    "commander": "^15.0.0",
+    "fast-glob": "^3.3.3",
+    "gray-matter": "^4.0.3",
+    "js-yaml": "^5.4.2"
+  },
+  "devDependencies": {
+    "@types/js-yaml": "^4.0.9",
+    "@types/node": "^26.6.4",
+    "@typescript-eslint/eslint-plugin": "^8.71.0",
+    "@typescript-eslint/parser": "^8.71.0",
+    "eslint": "^10.12.0",
+    "execa": "^10.0.1",
+    "tsup": "^8.5.1",
+    "tsx": "^4.23.15",
+    "typescript": "^6.0.3",
+    "vitest": "^5.0.3"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ]
+}
