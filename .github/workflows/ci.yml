@@ -1,0 +1,25 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci
+      - run: npm run build
+      - run: npm test
+      - name: SkillGuard scan (clean fixture must pass)
+        run: node dist/cli.cjs scan tests/fixtures/skills/clean-skill --format json
+      - name: SkillGuard scan (malicious fixtures must fail)
+        run: |
+          if node dist/cli.cjs scan tests/fixtures/skills --format json > /dev/null; then
+            echo "Expected malicious fixtures to fail the scan policy" >&2
+            exit 1
+          fi
