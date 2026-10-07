@@ -1,4 +1,5 @@
 import { Detector, eachLine, makeFinding } from './common.js';
+import type { Finding } from '../types/index.js';
 
 function looksBase64(token: string): boolean {
   return /^[A-Za-z0-9+/=]{40,}$/.test(token) && /={0,2}$/.test(token);
@@ -30,7 +31,7 @@ export const obfuscationDetector: Detector = {
   description: 'Obfuscation patterns: suspicious base64 blobs decoding to shell, zero-width characters',
   severity: 'high',
   run(input) {
-    const findings: any[] = [];
+    const findings: Finding[] = [];
     eachLine(input, (line, num) => {
       if (ZERO_WIDTH.test(line)) {
         findings.push(makeFinding(this.id, 'medium', input.filePath, num, 'Contains zero-width or BOM characters', line));

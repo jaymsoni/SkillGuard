@@ -9,7 +9,7 @@ import { obfuscationDetector } from '../detectors/obfuscation.js';
 import { suspiciousDownloadsDetector } from '../detectors/suspiciousDownloads.js';
 import { secretsDetector } from '../detectors/secrets.js';
 import { allowedToolsAbuseDetector } from '../detectors/allowedToolsAbuse.js';
-import { Finding, ScanSummary, SkillScanResult } from '../types/index.js';
+import { Finding, ScanSummary, SkillScanResult, Severity } from '../types/index.js';
 import { VERSION } from '../version.js';
 
 const DETECTORS: Detector[] = [
@@ -20,16 +20,6 @@ const DETECTORS: Detector[] = [
   secretsDetector,
   allowedToolsAbuseDetector
 ];
-
-function severityOrder(sev: string): number {
-  switch (sev) {
-    case 'critical': return 4;
-    case 'high': return 3;
-    case 'medium': return 2;
-    case 'low': return 1;
-    default: return 0;
-  }
-}
 
 function scoreQuality(parsed: ReturnType<typeof parseSkill>, dir: string): number {
   let score = 0;
@@ -53,7 +43,7 @@ function scoreQuality(parsed: ReturnType<typeof parseSkill>, dir: string): numbe
 }
 
 export interface ScanOptions {
-  policyFailOn?: ('critical')[]; // v0 default: only critical
+  policyFailOn?: Severity[]; // v0 default: only critical
 }
 
 export function findSkillsUnder(root: string): string[] {
@@ -83,8 +73,8 @@ export function scanSkillDir(dir: string): SkillScanResult {
     }
   }
 
-  const sevSummary = { info: 0, low: 0, medium: 0, high: 0, critical: 0 } as any;
-  for (const f of findings) (sevSummary as any)[f.severity]++;
+  const sevSummary: Record<Severity, number> = { info: 0, low: 0, medium: 0, high: 0, critical: 0 };
+  for (const f of findings) sevSummary[f.severity]++;
 
   const qualityScore = scoreQuality(parsed, dir);
 
@@ -100,23 +90,27 @@ export function scanSkillDir(dir: string): SkillScanResult {
 }
 
 export function scanPath(p: string, opts: ScanOptions = {}): ScanSummary {
-  const policyFailOn = opts.policyFailOn || ['critical'];
+  const policyFailOn: Severity[] = opts.policyFailOn || ['critical'];
   const skills = findSkillsUnder(p);
   const results: SkillScanResult[] = skills.map(scanSkillDir);
-  const totals = { skills: results.length, findings: 0, severity: { info: 0, low: 0, medium: 0, high: 0, critical: 0 } as any };
+  const totals: ScanSummary['totals'] = {
+    skills: results.length,
+    findings: 0,
+    severity: { info: 0, low: 0, medium: 0, high: 0, critical: 0 }
+  };
   for (const r of results) {
     totals.findings += r.findings.length;
-    for (const k of Object.keys(r.severitySummary) as (keyof typeof r.severitySummary)[]) {
-      (totals.severity as any)[k] += r.severitySummary[k];
+    for (const s of Object.keys(r.severitySummary) as Severity[]) {
+      totals.severity[s] += r.severitySummary[s];
     }
   }
-  const failed = results.some(r => policyFailOn.some(s => r.severitySummary[s as any] > 0));
+  const failed = results.some(r => policyFailOn.some(s => r.severitySummary[s] > 0));
   return {
     scannerVersion: getScannerVersion(),
     scannedAt: new Date().toISOString(),
     skills: results,
     totals,
-    policy: { failOn: policyFailOn as any, failed }
+    policy: { failOn: policyFailOn, failed }
   };
 }
 

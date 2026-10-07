@@ -1,4 +1,5 @@
 import { Detector, eachLine, makeFinding } from './common.js';
+import type { Finding } from '../types/index.js';
 
 const patterns: { re: RegExp; label: string }[] = [
   { re: /(curl|wget)\s+[^\n|]+\|\s*(bash|sh)/i, label: 'pipe to shell' },
@@ -12,7 +13,7 @@ export const remoteExecDetector: Detector = {
   description: 'Remote execution patterns (curl|bash, wget|sh, eval base64)',
   severity: 'critical',
   run(input) {
-    const findings: any[] = [];
+    const findings: Finding[] = [];
     eachLine(input, (line, num) => {
       for (const { re, label } of patterns) {
         const m = line.match(re);
