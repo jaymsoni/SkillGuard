@@ -11,7 +11,8 @@ function resolveRealTargetDir(target: InstallTarget): string {
   switch (target) {
     case 'cursor': return path.join(home, '.cursor', 'skills');
     case 'agents': return path.join(home, '.agents', 'skills');
-    case 'claude': return path.join(home, '.anthropic', 'skills');
+    // Claude Code skills: personal directory is ~/.claude/skills (project-level: ./.claude/skills)
+    case 'claude': return path.join(home, '.claude', 'skills');
   }
 }
 
