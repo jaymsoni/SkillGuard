@@ -1,4 +1,5 @@
 import { Detector, eachLine, makeFinding } from './common.js';
+import type { Finding } from '../types/index.js';
 
 const patterns = [
   /ignore (all|any|the)?\s*previous instructions/i,
@@ -14,7 +15,7 @@ export const promptInjectionDetector: Detector = {
   description: 'Prompt-injection phrases that attempt to override prior instructions or impersonate the system message',
   severity: 'high',
   run(input) {
-    const findings: any[] = [];
+    const findings: Finding[] = [];
     eachLine(input, (line, num) => {
       for (const re of patterns) {
         const m = line.match(re);

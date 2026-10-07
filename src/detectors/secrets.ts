@@ -1,4 +1,5 @@
 import { Detector, eachLine, makeFinding } from './common.js';
+import type { Finding } from '../types/index.js';
 
 // Common API key/token patterns (conservative). Avoid placeholders with YOUR/TEST/EXAMPLE/XXXX etc.
 const SECRET_PATTERNS: { re: RegExp; label: string }[] = [
@@ -20,7 +21,7 @@ export const secretsDetector: Detector = {
   description: 'Hardcoded secrets (API keys, tokens, private keys)',
   severity: 'critical',
   run(input) {
-    const findings: any[] = [];
+    const findings: Finding[] = [];
     eachLine(input, (line, num) => {
       for (const { re, label } of SECRET_PATTERNS) {
         const m = line.match(re);

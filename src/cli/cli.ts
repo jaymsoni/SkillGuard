@@ -45,7 +45,7 @@ program
     const abs = path.resolve(p);
     const skills = findSkillDirs(abs);
     for (const dir of skills) {
-      const lock = writeLock(dir);
+      writeLock(dir);
       console.log(color('green', `lock written:`), path.join(dir, 'skill-lock.json'));
     }
   });
@@ -81,13 +81,14 @@ function printHuman(summary: ReturnType<typeof scanPath>) {
   console.log(`Scanned ${summary.totals.skills} skill(s); Findings: ${summary.totals.findings}`);
   for (const s of summary.skills) {
     const sev = s.severitySummary;
-    const worst = ['critical','high','medium','low','info'].find(k => (sev as any)[k] > 0) || 'none';
+    const order: Array<keyof typeof sev> = ['critical','high','medium','low','info'];
+    const worst = order.find(k => sev[k] > 0) || 'none';
     console.log(`\n${color('bold', s.name)} (${s.path})`);
     console.log(`  Frontmatter: ${s.validFrontmatter ? color('green', 'valid') : color('red', 'invalid')}`);
     console.log(`  Quality: ${s.qualityScore}/100  Severity: ${worst}`);
     for (const f of s.findings) {
-      const sevColor = f.severity === 'critical' ? 'red' : f.severity === 'high' ? 'yellow' : 'gray';
-      console.log(`   - [${color(sevColor as any, f.severity)}] ${f.ruleId} ${f.file}:${f.line} - ${f.message}`);
+      const sevColor: 'red' | 'yellow' | 'gray' = f.severity === 'critical' ? 'red' : f.severity === 'high' ? 'yellow' : 'gray';
+      console.log(`   - [${color(sevColor, f.severity)}] ${f.ruleId} ${f.file}:${f.line} - ${f.message}`);
     }
   }
 }

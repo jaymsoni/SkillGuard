@@ -1,4 +1,5 @@
 import { Detector, eachLine, makeFinding } from './common.js';
+import type { Finding } from '../types/index.js';
 
 // Conservative: flag when 'allowed-tools' mentions direct shell/exec tools
 const SUSPICIOUS_TOOLS = [
@@ -9,9 +10,9 @@ export const allowedToolsAbuseDetector: Detector = {
   id: 'SG300',
   description: 'allowed-tools includes direct shell/exec tools',
   severity: 'medium',
-  run(input, ctx) {
+  run(input) {
     // This detector expects to run on SKILL.md only. It inspects the frontmatter lines.
-    const findings: any[] = [];
+    const findings: Finding[] = [];
     eachLine(input, (line, num) => {
       if (/^allowed-?tools\s*:/.test(line)) {
         const lower = line.toLowerCase();
