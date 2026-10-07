@@ -1,10 +1,10 @@
-# SkillGuard
+## SkillGuard
 
 [![CI](https://github.com/jaymsoni/SkillGuard/actions/workflows/ci.yml/badge.svg)](https://github.com/jaymsoni/SkillGuard/actions/workflows/ci.yml)
 
 Repository: https://github.com/jaymsoni/SkillGuard
 
-An open-source CLI that scans Agent Skills (agentskills.io format) for security issues, scores them, writes a lockfile, and installs only verified skills.
+SkillGuard is an open‑source CLI that scans, scores, and pins Agent Skills (SKILL.md) for Claude Code, Cursor, and Codex before install.
 
 - Deterministic, evidence-backed rules (no ML)
 - Quality rubric v0 (structure only)
@@ -54,7 +54,8 @@ Install refuses unless the scan policy passes (no critical findings) and the `sk
 
 - Cursor: `~/.cursor/skills/`
 - Generic agents: `~/.agents/skills/`
-- Claude: `~/.anthropic/skills/` (varies by setup)
+- Claude (personal): `~/.claude/skills/`
+- Claude (project): `.claude/skills/`
 
 ## What is a Skill?
 
@@ -119,6 +120,23 @@ npm test
 node dist/cli.cjs scan tests/fixtures/skills/clean-skill --format json   # exits 0
 npm run scan:ci   # scans all fixtures; exits 1 by design (malicious fixtures)
 ```
+
+## FAQ
+
+- How do I check if a Claude skill is safe?
+  - Run: `skillguard scan /path/to/skill` (or a folder of skills). Exit code is non‑zero if critical findings are present. For JSON, append `--format json`.
+
+- How do I pin/lock Agent Skills?
+  - Run: `skillguard lock /path/to/skills`. This writes a per‑skill `skill-lock.json` with a content hash that must match at install time.
+
+- Where do Claude skills live?
+  - Personal: `~/.claude/skills/`. Project‑local: `.claude/skills/`.
+
+- How do I install a locked, verified skill?
+  - `skillguard install /path/to/skill --target claude` (or `cursor`, `agents`). By default, files are copied to `./.skillguard-out/target-<name>/`; use `--out-dir` to choose a directory. Installation is gated by a passing scan and matching lock hash.
+
+- How does SkillGuard compare to Cisco skill-scanner / NVIDIA SkillSpector / Snyk agent-scan?
+  - SkillGuard is a lightweight, deterministic scanner plus a lockfile and gated install. Those tools go deeper on dynamic/semantic detection. Use SkillGuard for fast, reproducible checks and provenance; use the others when you need deeper analysis.
 
 ## License
 
