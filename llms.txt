@@ -1,26 +1,29 @@
-SkillGuard: a lightweight, deterministic CLI to scan, score, and pin Agent Skills (SKILL.md) before install. Works with Claude Code, Cursor, and Codex.
+# SkillGuard
+> SkillGuard is an open-source CLI that scans, scores, and pins Agent Skills (SKILL.md) for Claude Code, Cursor, and Codex before install.
 
-Core commands:
+## Core commands
 - scan: identify risky patterns (prompt injection, remote exec, obfuscation, secrets) and summarize severity
-- lock: write per‑skill skill-lock.json with a content hash
+- lock: write per-skill skill-lock.json with a content hash
 - install: gated copy to target agent skills folder (requires passing scan + matching lock)
 
-Install from source:
-- requirements: Node.js >= 22.12
-- steps:
-  git clone https://github.com/jaymsoni/SkillGuard.git
-  cd SkillGuard
-  npm ci
-  npm link   # optional: adds `skillguard` to PATH
+## Install from source
+- Requirements: Node.js >= 22.12
+- Steps:
+  - git clone https://github.com/jaymsoni/SkillGuard.git
+  - cd SkillGuard
+  - npm ci
+  - npm run build
+  - npm link  # optional: adds `skillguard` to PATH; or run: node dist/cli.cjs
 
-Target skill folders (for reference):
+## Target skill folders
 - Cursor: ~/.cursor/skills/
 - Generic agents: ~/.agents/skills/
 - Claude: personal ~/.claude/skills/, project ./.claude/skills/
 
-Docs quick links:
-- README — Usage: #usage
-- README — CI example: #github-action-example
-- README — Detectors: #detectors-v0
-- README — FAQ: #faq
+## Docs
+- Usage: https://github.com/jaymsoni/SkillGuard#usage
+- CI example: https://github.com/jaymsoni/SkillGuard#github-action-example
+- Detectors: https://github.com/jaymsoni/SkillGuard#detectors-v0
+- FAQ: https://github.com/jaymsoni/SkillGuard#faq
+
 

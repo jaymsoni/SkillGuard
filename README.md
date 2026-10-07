@@ -1,10 +1,10 @@
-## SkillGuard
+# SkillGuard
 
 [![CI](https://github.com/jaymsoni/SkillGuard/actions/workflows/ci.yml/badge.svg)](https://github.com/jaymsoni/SkillGuard/actions/workflows/ci.yml)
 
 Repository: https://github.com/jaymsoni/SkillGuard
 
-SkillGuard is an open‑source CLI that scans, scores, and pins Agent Skills (SKILL.md) for Claude Code, Cursor, and Codex before install.
+SkillGuard is an open-source CLI that scans, scores, and pins Agent Skills (SKILL.md) for Claude Code, Cursor, and Codex before install.
 
 - Deterministic, evidence-backed rules (no ML)
 - Quality rubric v0 (structure only)
@@ -22,8 +22,9 @@ From source:
 ```bash
 git clone https://github.com/jaymsoni/SkillGuard.git
 cd SkillGuard
-npm ci        # also builds dist/cli.cjs via the prepare script
-npm link      # optional: puts `skillguard` on your PATH
+npm ci
+npm run build
+npm link      # optional: puts `skillguard` on your PATH; or run: node dist/cli.cjs
 ```
 
 ## Usage
@@ -124,13 +125,13 @@ npm run scan:ci   # scans all fixtures; exits 1 by design (malicious fixtures)
 ## FAQ
 
 - How do I check if a Claude skill is safe?
-  - Run: `skillguard scan /path/to/skill` (or a folder of skills). Exit code is non‑zero if critical findings are present. For JSON, append `--format json`.
+  - Run: `skillguard scan /path/to/skill` (or a folder of skills). Exit code is non-zero if critical findings are present. For JSON, append `--format json`.
 
 - How do I pin/lock Agent Skills?
-  - Run: `skillguard lock /path/to/skills`. This writes a per‑skill `skill-lock.json` with a content hash that must match at install time.
+  - Run: `skillguard lock /path/to/skills`. This writes a per-skill `skill-lock.json` (one file inside each skill directory) with a content hash that must match at install time.
 
 - Where do Claude skills live?
-  - Personal: `~/.claude/skills/`. Project‑local: `.claude/skills/`.
+  - Personal: `~/.claude/skills/`. Project-local: `.claude/skills/`.
 
 - How do I install a locked, verified skill?
   - `skillguard install /path/to/skill --target claude` (or `cursor`, `agents`). By default, files are copied to `./.skillguard-out/target-<name>/`; use `--out-dir` to choose a directory. Installation is gated by a passing scan and matching lock hash.
