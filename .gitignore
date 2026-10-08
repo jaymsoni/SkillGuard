@@ -1,7 +1,7 @@
 node_modules
 .dist
 dist
-.skillguard-out*
-.skilguard-out-test
+.skilldoorman-out*
+.skilldoorman-out-test
 coverage
 .DS_Store

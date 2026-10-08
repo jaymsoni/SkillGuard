@@ -12,6 +12,6 @@ export default defineConfig({
   clean: true,
   // Inline the package version at build time so the CLI never reads package.json from the user's cwd.
   define: {
-    __SKILLGUARD_VERSION__: JSON.stringify(pkg.version)
+    __SKILLDOORMAN_VERSION__: JSON.stringify(pkg.version)
   }
 });

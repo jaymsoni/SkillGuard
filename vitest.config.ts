@@ -5,7 +5,7 @@ const pkg = JSON.parse(readFileSync(new URL('./package.json', import.meta.url), 
 
 export default defineConfig({
   define: {
-    __SKILLGUARD_VERSION__: JSON.stringify(pkg.version)
+    __SKILLDOORMAN_VERSION__: JSON.stringify(pkg.version)
   },
   test: {
     include: ['tests/**/*.test.ts']
