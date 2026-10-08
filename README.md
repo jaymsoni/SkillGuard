@@ -1,15 +1,17 @@
-# SkillGuard
+# skilldoorman
 
-[![CI](https://github.com/jaymsoni/SkillGuard/actions/workflows/ci.yml/badge.svg)](https://github.com/jaymsoni/SkillGuard/actions/workflows/ci.yml)
+[![CI](https://github.com/jaymsoni/skilldoorman/actions/workflows/ci.yml/badge.svg)](https://github.com/jaymsoni/skilldoorman/actions/workflows/ci.yml)
 
-Repository: https://github.com/jaymsoni/SkillGuard
+Repository: https://github.com/jaymsoni/skilldoorman
 
-SkillGuard is an open-source CLI that scans, scores, and pins Agent Skills (SKILL.md) for Claude Code, Cursor, and Codex before install.
+skilldoorman is an open-source CLI that scans, scores, and pins Agent Skills (SKILL.md) for Claude Code, Cursor, and Codex before install.
+
+Unrelated to other tools named SkillGuard; formerly developed under that name.
 
 - Deterministic, evidence-backed rules (no ML)
 - Quality rubric v0 (structure only)
 - `skill-lock.json` content-hash lockfile
-- Safe install into target agent skill paths (dry-run to `.skillguard-out/` by default)
+- Safe install into target agent skill paths (dry-run to `.skilldoorman-out/` by default)
 
 Apache-2.0 licensed.
 
@@ -20,11 +22,11 @@ Requires Node.js 22.12 or newer.
 From source:
 
 ```bash
-git clone https://github.com/jaymsoni/SkillGuard.git
-cd SkillGuard
+git clone https://github.com/jaymsoni/skilldoorman.git
+cd skilldoorman
 npm ci
 npm run build
-npm link      # optional: puts `skillguard` on your PATH; or run: node dist/cli.cjs
+npm link      # optional: puts `skilldoorman` on your PATH; or run: node dist/cli.cjs
 ```
 
 ## Usage
@@ -32,8 +34,8 @@ npm link      # optional: puts `skillguard` on your PATH; or run: node dist/cli.
 - Scan one skill or a directory of skills:
 
 ```bash
-skillguard scan ./path/to/skill
-skillguard scan ./path/to/skills --format json
+skilldoorman scan ./path/to/skill
+skilldoorman scan ./path/to/skills --format json
 ```
 
 Exit code is non-zero when critical findings are present.
@@ -41,14 +43,14 @@ Exit code is non-zero when critical findings are present.
 - Write a lockfile (per-skill `skill-lock.json`):
 
 ```bash
-skillguard lock ./path/to/skills
+skilldoorman lock ./path/to/skills
 ```
 
-- Install a locked and verified skill (default installs to `./.skillguard-out/target-<name>/`):
+- Install a locked and verified skill (default installs to `./.skilldoorman-out/target-<name>/`):
 
 ```bash
-skillguard install ./path/to/skill --target cursor
-skillguard install ./path/to/skill --target claude --out-dir ./sandbox
+skilldoorman install ./path/to/skill --target cursor
+skilldoorman install ./path/to/skill --target claude --out-dir ./sandbox
 ```
 
 Install refuses unless the scan policy passes (no critical findings) and the `skill-lock.json` content hash matches the current files. Real target directories (documented only):
@@ -87,22 +89,22 @@ Simple structural score 0–100:
 
 ## GitHub Action Example
 
-`.github/workflows/ci.yml` runs build, tests, and scans this repo's fixtures (the clean fixture must pass; the intentionally malicious fixtures must fail). To add SkillGuard to your own repo:
+`.github/workflows/ci.yml` runs build, tests, and scans this repo's fixtures (the clean fixture must pass; the intentionally malicious fixtures must fail). To add skilldoorman to your own repo:
 
 ```yaml
 - uses: actions/setup-node@v4
   with:
     node-version: '22'
-- run: git clone --depth 1 https://github.com/jaymsoni/SkillGuard.git "$RUNNER_TEMP/skillguard"
-- run: cd "$RUNNER_TEMP/skillguard" && npm ci
-- run: node "$RUNNER_TEMP/skillguard/dist/cli.cjs" scan skills --format json
+- run: git clone --depth 1 https://github.com/jaymsoni/skilldoorman.git "$RUNNER_TEMP/skilldoorman"
+- run: cd "$RUNNER_TEMP/skilldoorman" && npm ci
+- run: node "$RUNNER_TEMP/skilldoorman/dist/cli.cjs" scan skills --format json
 ```
 
 The job fails on critical findings.
 
 ## Threat Model & Positioning
 
-SkillGuard is not a guarantee of safety. It enforces deterministic checks and a content hash. Think "npm audit" for Agent Skills: "scanned on date X" — not "safe forever". It differs from Snyk mcp-scan (PoS) by avoiding ML heuristics and focusing on transparent, reproducible rules plus a lockfile and install gate.
+skilldoorman is not a guarantee of safety. It enforces deterministic checks and a content hash. Think "npm audit" for Agent Skills: "scanned on date X" — not "safe forever". It differs from Snyk mcp-scan (PoS) by avoiding ML heuristics and focusing on transparent, reproducible rules plus a lockfile and install gate.
 
 ## Differences vs Snyk mcp-scan
 
@@ -125,19 +127,19 @@ npm run scan:ci   # scans all fixtures; exits 1 by design (malicious fixtures)
 ## FAQ
 
 - How do I check if a Claude skill is safe?
-  - Run: `skillguard scan /path/to/skill` (or a folder of skills). Exit code is non-zero if critical findings are present. For JSON, append `--format json`.
+  - Run: `skilldoorman scan /path/to/skill` (or a folder of skills). Exit code is non-zero if critical findings are present. For JSON, append `--format json`.
 
 - How do I pin/lock Agent Skills?
-  - Run: `skillguard lock /path/to/skills`. This writes a per-skill `skill-lock.json` (one file inside each skill directory) with a content hash that must match at install time.
+  - Run: `skilldoorman lock /path/to/skills`. This writes a per-skill `skill-lock.json` (one file inside each skill directory) with a content hash that must match at install time.
 
 - Where do Claude skills live?
   - Personal: `~/.claude/skills/`. Project-local: `.claude/skills/`.
 
 - How do I install a locked, verified skill?
-  - `skillguard install /path/to/skill --target claude` (or `cursor`, `agents`). By default, files are copied to `./.skillguard-out/target-<name>/`; use `--out-dir` to choose a directory. Installation is gated by a passing scan and matching lock hash.
+  - `skilldoorman install /path/to/skill --target claude` (or `cursor`, `agents`). By default, files are copied to `./.skilldoorman-out/target-<name>/`; use `--out-dir` to choose a directory. Installation is gated by a passing scan and matching lock hash.
 
-- How does SkillGuard compare to Cisco skill-scanner / NVIDIA SkillSpector / Snyk agent-scan?
-  - SkillGuard is a lightweight, deterministic scanner plus a lockfile and gated install. Those tools go deeper on dynamic/semantic detection. Use SkillGuard for fast, reproducible checks and provenance; use the others when you need deeper analysis.
+- How does skilldoorman compare to Cisco skill-scanner / NVIDIA SkillSpector / Snyk agent-scan?
+  - skilldoorman is a lightweight, deterministic scanner plus a lockfile and gated install. Those tools go deeper on dynamic/semantic detection. Use skilldoorman for fast, reproducible checks and provenance; use the others when you need deeper analysis.
 
 ## License
 

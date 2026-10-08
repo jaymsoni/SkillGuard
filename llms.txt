@@ -1,5 +1,5 @@
-# SkillGuard
-> SkillGuard is an open-source CLI that scans, scores, and pins Agent Skills (SKILL.md) for Claude Code, Cursor, and Codex before install.
+# skilldoorman
+> skilldoorman is an open-source CLI that scans, scores, and pins Agent Skills (SKILL.md) for Claude Code, Cursor, and Codex before install.
 
 ## Core commands
 - scan: identify risky patterns (prompt injection, remote exec, obfuscation, secrets) and summarize severity
@@ -9,11 +9,11 @@
 ## Install from source
 - Requirements: Node.js >= 22.12
 - Steps:
-  - git clone https://github.com/jaymsoni/SkillGuard.git
-  - cd SkillGuard
+  - git clone https://github.com/jaymsoni/skilldoorman.git
+  - cd skilldoorman
   - npm ci
   - npm run build
-  - npm link  # optional: adds `skillguard` to PATH; or run: node dist/cli.cjs
+  - npm link  # optional: adds `skilldoorman` to PATH; or run: node dist/cli.cjs
 
 ## Target skill folders
 - Cursor: ~/.cursor/skills/
@@ -21,9 +21,9 @@
 - Claude: personal ~/.claude/skills/, project ./.claude/skills/
 
 ## Docs
-- Usage: https://github.com/jaymsoni/SkillGuard#usage
-- CI example: https://github.com/jaymsoni/SkillGuard#github-action-example
-- Detectors: https://github.com/jaymsoni/SkillGuard#detectors-v0
-- FAQ: https://github.com/jaymsoni/SkillGuard#faq
+- Usage: https://github.com/jaymsoni/skilldoorman#usage
+- CI example: https://github.com/jaymsoni/skilldoorman#github-action-example
+- Detectors: https://github.com/jaymsoni/skilldoorman#detectors-v0
+- FAQ: https://github.com/jaymsoni/skilldoorman#faq
 
 

@@ -1,4 +1,4 @@
-name: CI
+name: skilldoorman CI
 
 on:
   push:
@@ -19,9 +19,9 @@ jobs:
         run: npm run typecheck
       - run: npm run build
       - run: npm test
-      - name: SkillGuard scan (clean fixture must pass)
+      - name: skilldoorman scan (clean fixture must pass)
         run: node dist/cli.cjs scan tests/fixtures/skills/clean-skill --format json
-      - name: SkillGuard scan (malicious fixtures must fail)
+      - name: skilldoorman scan (malicious fixtures must fail)
         run: |
           if node dist/cli.cjs scan tests/fixtures/skills --format json > /dev/null; then
             echo "Expected malicious fixtures to fail the scan policy" >&2
