@@ -26,7 +26,7 @@ describe('cli integration', () => {
   });
 
   it('works outside the repo and reports its own version', async () => {
-    const elsewhere = fs.mkdtempSync(path.join(os.tmpdir(), 'skillguard-cwd-'));
+    const elsewhere = fs.mkdtempSync(path.join(os.tmpdir(), 'skilldoorman-cwd-'));
     const res = await run(['scan', path.join(FIXTURES, 'clean-skill'), '--format', 'json'], elsewhere);
     expect(res.exitCode).toBe(0);
     expect(JSON.parse(res.stdout).scannerVersion).toBe(PKG_VERSION);
@@ -41,7 +41,7 @@ describe('cli integration', () => {
 
     // clean: lock then install (on a temp copy so repo fixtures are untouched)
     const cleanDir = copyFixture('clean-skill');
-    const outDir = fs.mkdtempSync(path.join(os.tmpdir(), 'skillguard-out-'));
+    const outDir = fs.mkdtempSync(path.join(os.tmpdir(), 'skilldoorman-out-'));
     const lock = await run(['lock', cleanDir]);
     expect(lock.exitCode).toBe(0);
     const clean = await run(['install', cleanDir, '--out-dir', outDir]);
