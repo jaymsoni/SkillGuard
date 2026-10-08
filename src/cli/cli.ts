@@ -19,7 +19,7 @@ import { VERSION } from '../version.js';
 
 const program = new Command();
 program
-  .name('skillguard')
+  .name('skilldoorman')
   .description('Scan Agent Skills for security issues, score, lock, and safe-install')
   .version(VERSION);
 
@@ -54,7 +54,7 @@ program
   .command('install')
   .argument('<skill-dir>', 'Skill directory')
   .option('--target <t>', 'cursor|claude|agents', 'cursor')
-  .option('--out-dir <d>', 'output directory (default: ./.skillguard-out)')
+  .option('--out-dir <d>', 'output directory (default: ./.skilldoorman-out)')
   .action((p: string, opts: { target: InstallTarget; outDir?: string }) => {
     const abs = path.resolve(p);
     const res = installSkill(abs, opts.target, { outDir: opts.outDir });

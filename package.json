@@ -1,5 +1,5 @@
 {
-  "name": "skillguard",
+  "name": "skilldoorman",
   "version": "0.1.0",
   "description": "CLI to scan Agent Skills for security issues, score them, lock, and install",
   "scripts": {
@@ -15,11 +15,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jaymsoni/SkillGuard.git"
+    "url": "git+https://github.com/jaymsoni/skilldoorman.git"
   },
-  "homepage": "https://github.com/jaymsoni/SkillGuard#readme",
+  "homepage": "https://github.com/jaymsoni/skilldoorman#readme",
   "bugs": {
-    "url": "https://github.com/jaymsoni/SkillGuard/issues"
+    "url": "https://github.com/jaymsoni/skilldoorman/issues"
   },
   "keywords": [],
   "author": "",
@@ -29,7 +29,7 @@
     "node": ">=22.12"
   },
   "bin": {
-    "skillguard": "dist/cli.cjs"
+    "skilldoorman": "dist/cli.cjs"
   },
   "dependencies": {
     "commander": "^15.0.0",

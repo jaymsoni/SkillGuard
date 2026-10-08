@@ -17,14 +17,14 @@ function resolveRealTargetDir(target: InstallTarget): string {
 }
 
 export interface InstallOptions {
-  outDir?: string; // default .skillguard-out/target-<name>
-  dryRun?: boolean; // when outDir is not set, we still write to .skillguard-out
+  outDir?: string; // default .skilldoorman-out/target-<name>
+  dryRun?: boolean; // when outDir is not set, we still write to .skilldoorman-out
 }
 
 export function installSkill(dir: string, target: InstallTarget, opts: InstallOptions = {}) {
   const lock = readLock(dir);
   if (!lock) {
-    throw new Error('skill-lock.json not found; run "skillguard lock" first');
+    throw new Error('skill-lock.json not found; run "skilldoorman lock" first');
   }
   const scan = scanSkillDir(dir);
   if (scan.severitySummary.critical > 0) {
@@ -35,7 +35,7 @@ export function installSkill(dir: string, target: InstallTarget, opts: InstallOp
     throw new Error('lock hash mismatch; update lock or review changes');
   }
 
-  const targetDir = opts.outDir ? path.resolve(opts.outDir) : path.join(process.cwd(), `.skillguard-out/target-${target}`);
+  const targetDir = opts.outDir ? path.resolve(opts.outDir) : path.join(process.cwd(), `.skilldoorman-out/target-${target}`);
   const finalDir = path.join(targetDir, path.basename(dir));
   ensureDir(targetDir);
 
